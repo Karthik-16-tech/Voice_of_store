@@ -3,7 +3,7 @@
 **AI Frontier Challenge 2026 — Round 1 Submission**  
 *Track: Enterprise AI & Autonomous Retail Operations*
 
-[![Platform](https://img.shields.io/badge/Platform-Voice%20of%20Store%20(VoS)-080A0F?style=for-the-badge&logoColor=white)](https://github.com/Karthik-16-tech/Opsight)
+[![Platform](https://img.shields.io/badge/Platform-Voice%20of%20Store%20(VoS)-080A0F?style=for-the-badge&logoColor=white)](https://github.com/Karthik-16-tech/Voice_of_store)
 [![AI Engine](https://img.shields.io/badge/AI%20Engine-Gemini%202.5%20Flash-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://ai.google.dev/)
 [![3D Digital Twin](https://img.shields.io/badge/3D%20Digital%20Twin-Three.js%20%7C%20WebGL-000000?style=for-the-badge&logo=three.js&logoColor=white)](https://threejs.org/)
 [![Frontend](https://img.shields.io/badge/Frontend-React%2019%20%7C%20TanStack%20Router-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://vitejs.dev/)
@@ -225,7 +225,7 @@ Accessible directly from the top navigation bar via **"Export Report"**:
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/Karthik-16-tech/Opsight.git
+git clone https://github.com/Karthik-16-tech/Voice_of_store.git
 cd Opsight
 ```
 
