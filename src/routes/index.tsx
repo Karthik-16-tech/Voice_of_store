@@ -2,15 +2,18 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
-import { ArrowRight, Menu, X } from "lucide-react";
-import { useEffect, useRef, useState, type CSSProperties, type PointerEvent } from "react";
+import {
+  ArrowRight,
+  Menu,
+  Play,
+  X,
+} from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
-import heroVideo from "@/assets/Untitled design (12).mp4";
+import storeHeroVideo from "@/assets/gemini_generated_video_6d31b3fd.mp4";
 import AboutSection from "@/components/AboutSection";
 import Experience from "@/components/Experience";
 import { FeaturesGallery } from "@/components/FeaturesGallery";
-import Footer from "@/components/Footer";
-import { Button } from "@/components/ui/button";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -19,15 +22,16 @@ if (typeof window !== "undefined") {
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Opsight AI — Turn Your Work Into Bigger Opportunities" },
+      { title: "Voice of Store AI — Retail Operations Intelligence" },
       {
         name: "description",
-        content: "Connect, showcase, and grow with Opsight AI.",
+        content:
+          "Turn customer and staff feedback into clear insights, faster resolutions, and better store operations with the power of AI.",
       },
-      { property: "og:title", content: "Opsight AI" },
+      { property: "og:title", content: "Voice of Store AI — Retail Operations Intelligence" },
       {
         property: "og:description",
-        content: "Turn your work into bigger opportunities with Opsight AI.",
+        content: "Every store has a story. Now you can act on it.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -36,18 +40,20 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const navItems = ["Home", "Features", "Experience", "About", "Contact"];
+const navItems = [
+  { name: "Platform", href: "/app-dashboard" },
+  { name: "Solutions", href: "/environment" },
+  { name: "Store Intelligence", href: "/dashboard" },
+  { name: "Resources", href: "#features" },
+  { name: "Pricing", href: "/admin" },
+];
 
 function Index() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [activeNav, setActiveNav] = useState("Home");
-  const [previewNav, setPreviewNav] = useState<string | null>(null);
-  const navRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const lenisRef = useRef<Lenis | null>(null);
-  const visibleNav = previewNav ?? activeNav;
 
-  // Initialize GSAP + Lenis inline kinetic smooth scroll (Fast & Snappy)
+  // Initialize GSAP + Lenis kinetic smooth scroll
   useEffect(() => {
     const lenis = new Lenis({
       duration: 0.55,
@@ -60,8 +66,6 @@ function Index() {
     });
 
     lenisRef.current = lenis;
-
-    // Connect Lenis with GSAP ScrollTrigger
     lenis.on("scroll", ScrollTrigger.update);
 
     const updateTicker = (time: number) => {
@@ -78,167 +82,161 @@ function Index() {
     };
   }, []);
 
-  // Update active nav based on scroll position
+  // Ensure hero video autoplays smoothly and trigger refresh
   useEffect(() => {
-    const handleScroll = () => {
-      const aboutEl = document.getElementById("about");
-      const expEl = document.getElementById("experience");
-      const featEl = document.getElementById("features");
-      const vh = window.innerHeight * 0.45;
-      if (aboutEl && aboutEl.getBoundingClientRect().top <= vh) {
-        setActiveNav("About");
-      } else if (expEl && expEl.getBoundingClientRect().top <= vh) {
-        setActiveNav("Experience");
-      } else if (featEl && featEl.getBoundingClientRect().top <= vh) {
-        setActiveNav("Features");
-      } else {
-        setActiveNav("Home");
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    if (videoRef.current) {
+      videoRef.current.play().catch((err) => {
+        console.warn("Video autoplay prevented:", err);
+      });
+    }
+    const timer = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 200);
+    return () => clearTimeout(timer);
   }, []);
 
-  const handleGlassPointer = (event: PointerEvent<HTMLElement>) => {
-    const nav = navRef.current;
-    if (!nav) return;
-    const bounds = nav.getBoundingClientRect();
-    nav.style.setProperty("--glass-x", `${event.clientX - bounds.left}px`);
-    nav.style.setProperty("--glass-y", `${event.clientY - bounds.top}px`);
-  };
-
-  const handleNavClick = (item: string) => {
-    setActiveNav(item);
-    setMenuOpen(false);
-    const targetId = item === "Home" ? "#main" : `#${item.toLowerCase()}`;
-    if (lenisRef.current) {
-      lenisRef.current.scrollTo(targetId, {
-        duration: 0.4,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      });
-    } else {
-      const el = document.querySelector(targetId);
-      if (el) {
-        el.scrollIntoView({ behavior: "smooth" });
-      }
-    }
-  };
-
   return (
-    <div className="site-wrapper">
-      <header className="site-header">
-        <nav
-          ref={navRef}
-          className="liquid-nav"
-          aria-label="Main navigation"
-          onPointerMove={handleGlassPointer}
-        >
-          <div className="liquid-nav__shine" aria-hidden="true" />
-          <a
-            className="brand flex items-center gap-2"
-            href="#main"
-            aria-label="Opsight AI home"
-            onClick={(e) => {
-              e.preventDefault();
-              handleNavClick("Home");
-            }}
-          >
-            <img src="/favicon.ico" alt="Opsight Logo" className="w-5 h-5 object-contain" />
-            <span className="brand__name">OPSIGHT AI</span>
-          </a>
+    <div className="min-h-screen bg-[#fbfcff] text-slate-900 font-sans selection:bg-blue-100 selection:text-blue-900 relative overflow-x-clip">
+      {/* Subtle warm/ice-blue background ambient lighting */}
+      <div className="pointer-events-none absolute -top-32 right-1/4 w-[700px] h-[700px] bg-blue-100/35 rounded-full blur-[140px] -z-10" />
+      <div className="pointer-events-none absolute top-40 -left-20 w-[600px] h-[600px] bg-purple-100/25 rounded-full blur-[150px] -z-10" />
 
-          <div
-            className="desktop-links"
-            aria-label="Primary links"
-            onMouseLeave={() => setPreviewNav(null)}
-          >
-            <span
-              className="nav-link-indicator"
-              style={{
-                "--nav-index": Math.max(0, navItems.indexOf(visibleNav)),
-              } as CSSProperties}
-              aria-hidden="true"
-            />
+      {/* ── Minimal Top Navigation matching screenshot ── */}
+      <header className="w-full border-b border-slate-100/80 bg-white/75 backdrop-blur-md sticky top-0 z-40">
+        <div className="mx-auto flex max-w-[1520px] items-center justify-between px-6 py-4 sm:px-10 lg:px-12">
+          {/* Left: Waveform Logo & Brand */}
+          <Link to="/" className="flex items-center gap-3 group cursor-pointer" title="Voice of Store AI">
+            <div className="flex items-center gap-[3px] h-7">
+              <span className="w-[3.5px] h-3 bg-blue-600 rounded-full" />
+              <span className="w-[3.5px] h-5 bg-blue-600 rounded-full" />
+              <span className="w-[3.5px] h-7 bg-blue-600 rounded-full shadow-[0_0_8px_rgba(37,99,235,0.4)]" />
+              <span className="w-[3.5px] h-4 bg-blue-600 rounded-full" />
+              <span className="w-[3.5px] h-6 bg-blue-600 rounded-full" />
+            </div>
+            <div className="leading-tight text-left">
+              <span className="text-base font-extrabold tracking-tight text-slate-950 block">
+                VOICE OF STORE <span className="text-blue-600 font-black">AI</span>
+              </span>
+              <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-widest block">
+                Retail Operations Intelligence
+              </span>
+            </div>
+          </Link>
+
+          {/* Center Links */}
+          <nav className="hidden md:flex items-center gap-8">
             {navItems.map((item) => (
-              <a
-                key={item}
-                className={item === visibleNav ? "nav-link nav-link--active" : "nav-link"}
-                href={item === "Home" ? "#main" : `#${item.toLowerCase()}`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleNavClick(item);
-                }}
-                onFocus={() => setPreviewNav(item)}
-                onBlur={() => setPreviewNav(null)}
-                onMouseEnter={() => setPreviewNav(item)}
+              <Link
+                key={item.name}
+                to={item.href}
+                className="text-[13.5px] font-medium text-slate-600 hover:text-slate-950 transition-colors"
               >
-                {item}
-              </a>
+                {item.name}
+              </Link>
+            ))}
+          </nav>
+
+          {/* Right Action */}
+          <div className="flex items-center gap-3">
+            <Link
+              to="/dashboard"
+              className="inline-flex items-center gap-2 rounded-full bg-[#0c0d12] hover:bg-black text-white px-5 py-2.5 text-xs font-semibold shadow-sm transition hover:scale-105 active:scale-95"
+            >
+              <span>Open Dashboard</span>
+              <ArrowRight size={13} />
+            </Link>
+
+            {/* Mobile menu toggle */}
+            <button
+              type="button"
+              onClick={() => setMenuOpen((o) => !o)}
+              className="md:hidden grid h-9 w-9 place-items-center rounded-xl border border-slate-200 text-slate-700"
+              aria-label="Toggle menu"
+            >
+              {menuOpen ? <X size={18} /> : <Menu size={18} />}
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile dropdown menu */}
+        {menuOpen && (
+          <div className="md:hidden border-t border-slate-100 bg-white/95 px-6 py-4 space-y-3">
+            {navItems.map((item) => (
+              <Link
+                key={item.name}
+                to={item.href}
+                onClick={() => setMenuOpen(false)}
+                className="block text-sm font-semibold text-slate-700 hover:text-blue-600"
+              >
+                {item.name}
+              </Link>
             ))}
           </div>
-
-          <div className="nav-actions">
-            <Button
-              className="mobile-menu-button"
-              variant="icon"
-              size="icon"
-              aria-label={menuOpen ? "Close menu" : "Open menu"}
-              aria-expanded={menuOpen}
-              onClick={() => setMenuOpen((open) => !open)}
-            >
-              {menuOpen ? <X size={20} /> : <Menu size={20} />}
-            </Button>
-          </div>
-
-          {menuOpen && (
-            <div className="mobile-menu">
-              {navItems.map((item) => (
-                <a
-                  key={item}
-                  href={item === "Home" ? "#main" : `#${item.toLowerCase()}`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleNavClick(item);
-                  }}
-                >
-                  {item}
-                </a>
-              ))}
-            </div>
-          )}
-        </nav>
+        )}
       </header>
 
-      <main className="hero-stage" id="main">
-        <video
-          ref={videoRef}
-          className="hero-video"
-          preload="auto"
-          autoPlay
-          muted
-          loop
-          playsInline
-          aria-hidden="true"
-        >
-          <source src={heroVideo} type="video/mp4" />
-        </video>
-        <div className="hero-shade" aria-hidden="true" />
+      {/* ── Hero Section (Full 4K Video Background) ── */}
+      <section className="relative isolate w-full min-h-[85vh] sm:min-h-[90vh] flex items-center overflow-hidden">
+        {/* Full 4K Video Background with enhanced contrast & vibrancy */}
+        <div className="absolute inset-0 w-full h-full z-0 overflow-hidden pointer-events-none">
+          <video
+            ref={videoRef}
+            src={storeHeroVideo}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            className="w-full h-full object-cover object-center filter contrast-[1.12] saturate-[1.16] brightness-[1.01] scale-[1.01] transition-all duration-700"
+            aria-label="Interactive Smart Store AI Operations Animation"
+          >
+            <source src={storeHeroVideo} type="video/mp4" />
+            <source src="/gemini_generated_video_6d31b3fd.mp4" type="video/mp4" />
+          </video>
+          {/* Subtle directional gradient preserving full 4K clarity */}
+          <div className="absolute inset-0 bg-gradient-to-r from-[#fbfcff]/85 via-[#fbfcff]/35 via-45% to-transparent pointer-events-none" />
+          <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-[#fbfcff]/60 to-transparent pointer-events-none" />
+          <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#fbfcff] to-transparent pointer-events-none" />
+        </div>
 
-        <section className="hero-content" aria-labelledby="hero-title">
-          <h1 id="hero-title">
-            Turn Your Work Into
-            <br />
-            Bigger Opportunities
-          </h1>
-          <p>Connect. Showcase. Grow.</p>
-          <Button asChild variant="glass">
-            <Link to="/dashboard">
-              Get Started <ArrowRight size={17} strokeWidth={1.6} />
-            </Link>
-          </Button>
-        </section>
-      </main>
+        {/* Foreground Content - Pure Text directly aligned to left border without any enclosing box */}
+        <div className="relative w-full max-w-[1520px] mx-auto px-6 sm:px-10 lg:px-12 py-12 lg:py-20 z-10">
+          <div className="max-w-xl text-left">
+            {/* Eyebrow */}
+            <span className="text-[11px] font-mono font-bold tracking-[0.28em] uppercase text-blue-600 mb-4 block">
+              LISTEN · ANALYZE · ACT
+            </span>
+
+            {/* Editorial Serif Headline */}
+            <h1 className="font-serif text-[40px] sm:text-[48px] lg:text-[56px] font-normal leading-[1.08] tracking-tight text-slate-950">
+              Every store<br />
+              has a story.<br />
+              <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent font-medium">
+                Now you can
+              </span><br />
+              <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent font-medium">
+                act on it.
+              </span>
+            </h1>
+
+            {/* Description */}
+            <p className="mt-4 text-sm sm:text-base text-slate-700 max-w-md leading-relaxed font-normal">
+              Turn customer and staff feedback into clear insights, faster resolutions, and better store operations with the power of AI.
+            </p>
+
+            {/* CTA Button: Open Dashboard only */}
+            <div className="mt-7 flex items-center">
+              <Link
+                to="/dashboard"
+                className="inline-flex items-center gap-2.5 rounded-full bg-[#0c0d12] hover:bg-blue-600 text-white px-7 py-3.5 text-sm font-semibold shadow-md shadow-slate-900/15 transition-all hover:scale-[1.02] active:scale-[0.98]"
+              >
+                <span>Open Dashboard</span>
+                <ArrowRight size={15} />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Features page below hero section */}
       <FeaturesGallery />
@@ -248,10 +246,8 @@ function Index() {
 
       {/* About section */}
       <AboutSection />
-
-      {/* Footer */}
-      <Footer />
     </div>
   );
 }
 
+export default Index;

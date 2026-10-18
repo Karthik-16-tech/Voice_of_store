@@ -42,16 +42,16 @@ const tools = [
 
 export function AboutSection() {
   return (
-    <section id="about" className="pt-20 sm:pt-28 lg:pt-32 pb-16 sm:pb-20 lg:pb-24 bg-black relative text-white overflow-hidden border-t border-white/[0.03]">
+    <section id="about" className="pt-20 sm:pt-28 lg:pt-32 pb-16 sm:pb-20 lg:pb-24 bg-gradient-to-b from-white via-slate-50/50 to-white relative text-slate-900 overflow-hidden border-t border-slate-100">
       {/* Background subtle ambient glow */}
       <div
-        className="absolute top-1/3 left-10 w-[500px] h-[300px] bg-white/[0.012] rounded-full blur-[120px] pointer-events-none"
+        className="absolute top-1/3 left-10 w-[500px] h-[300px] bg-blue-500/[0.03] rounded-full blur-[120px] pointer-events-none"
         aria-hidden="true"
       />
 
-      {/* Moved close to the left border / edge */}
+      {/* Container aligned with spacious layout */}
       <div className="w-full pl-4 sm:pl-6 md:pl-8 lg:pl-10 xl:pl-12 pr-6 sm:pr-10 max-w-[1480px] relative z-10 text-left">
-        {/* Header Block with decreased text & heading size */}
+        {/* Header Block */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -59,24 +59,24 @@ export function AboutSection() {
           transition={{ duration: 0.6 }}
           className="mb-12 sm:mb-16 text-left"
         >
-          {/* Subtle line indicator */}
-          <span className="w-8 h-[1.5px] bg-white/70 block mb-5" aria-hidden="true" />
+          {/* Blue line indicator */}
+          <span className="w-8 h-[3px] bg-blue-600 block mb-4 rounded-full" aria-hidden="true" />
 
-          {/* Heading - decreased in size */}
-          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-[2rem] font-light text-white tracking-tight leading-[1.2]">
+          {/* Heading */}
+          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-[2.2rem] font-black text-slate-900 tracking-tight leading-[1.2]">
             Explore the Powerful Tools
             <br />
-            <span className="font-semibold text-white">OPSIGHT AI</span> Brings to You
+            <span className="font-black text-blue-600">OPSIGHT AI</span> Brings to You
           </h2>
 
-          {/* Subtitle - decreased in size */}
-          <p className="text-xs sm:text-[13px] text-neutral-400 mt-3 font-light tracking-wide max-w-lg">
+          {/* Subtitle */}
+          <p className="text-xs sm:text-[13px] text-slate-500 mt-2 font-normal tracking-wide max-w-lg">
             Smarter tools. Faster workflows. Endless possibilities.
           </p>
         </motion.div>
 
-        {/* 3-Column Tools Grid - moved to left border, decreased sizes */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 sm:gap-x-12 lg:gap-x-14 gap-y-10 sm:gap-y-12">
+        {/* 3-Column Tools Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
           {tools.map((tool, index) => {
             const Icon = tool.icon;
             return (
@@ -86,20 +86,20 @@ export function AboutSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.15 }}
                 transition={{ duration: 0.5, delay: index * 0.05 }}
-                className="group flex flex-col items-start cursor-default"
+                className="group flex flex-col items-start p-5 rounded-2xl border border-slate-200/80 bg-white/85 backdrop-blur-xl shadow-xs hover:shadow-md hover:border-blue-300 transition-all cursor-default"
               >
                 {/* Compact round badge with icon */}
-                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-white/20 bg-white/[0.04] flex items-center justify-center text-white mb-3.5 transition-all duration-300 group-hover:border-white/50 group-hover:bg-white/[0.09] group-hover:shadow-[0_0_14px_rgba(255,255,255,0.18)] group-hover:scale-105">
-                  <Icon size={17} strokeWidth={1.6} />
+                <div className="w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 text-blue-600 flex items-center justify-center mb-3 transition-colors duration-300 group-hover:bg-blue-600 group-hover:text-white shadow-xs">
+                  <Icon size={18} strokeWidth={1.8} />
                 </div>
 
-                {/* Title - decreased size */}
-                <h3 className="text-[14px] sm:text-[15px] font-medium text-white mb-1.5 tracking-tight group-hover:text-white transition-colors">
+                {/* Title */}
+                <h3 className="text-[15px] font-bold text-slate-900 mb-1.5 tracking-tight group-hover:text-blue-600 transition-colors">
                   {tool.title}
                 </h3>
 
-                {/* Description - decreased size */}
-                <p className="text-[12px] sm:text-[13px] text-neutral-400 font-light leading-relaxed group-hover:text-neutral-300 transition-colors">
+                {/* Description */}
+                <p className="text-[12px] sm:text-[13px] text-slate-500 font-normal leading-relaxed">
                   {tool.description}
                 </p>
               </motion.div>

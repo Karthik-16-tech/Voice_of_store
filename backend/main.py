@@ -291,10 +291,6 @@ List the clear, sequential engineering remediation steps:
 2. **Clear Orphaned Connections**: Run `SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE state = 'idle in transaction';` in PostgreSQL.
 3. **Rollback Faulty Commit**: Trigger canary rollback of payments-service to stable release v2.13.8.
 4. **Scale HikariCP Pool**: Rescale maximum pool size from 50 to 200 with an aggressive 30s connection leak threshold.
-
-### 📑 Matched Hindsight Ticket
-Conclude your response with the matched similar incident ticket from Hindsight memory:
-"Similar Incident Ticket: #INC-014 (94% Match) - Payment Service 504 Timeout & DB Pool Saturation."
 """
 
 # ============================================================================
@@ -443,8 +439,6 @@ MANDATORY RESPONSE REQUIREMENTS:
 1. Explain the error clearly to the programmer/engineer in an easy, straightforward way.
 2. Evaluate the telemetry clearly: explain that the payment API is failing with 504 Gateway Timeouts because database connections are pegged at 98% saturation, caused by unclosed transaction blocks in commit {recent_deploy['commit']}.
 3. State the concrete resolution steps: drain node-us-east-2, kill idle transactions via pg_terminate_backend, and canary rollback to v2.13.8.
-4. AT THE VERY END OF YOUR ANSWER, YOU MUST CLEARLY DISPLAY THE MATCHED SIMILAR TICKET:
-"Similar Incident Ticket: #{top_match['id']} ({int(top_match['similarity_score'] * 100)}% match) — {top_match['title']}."
 """
 
         for model_name in ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-1.5-flash"]:
@@ -487,17 +481,12 @@ Commit `{recent_deploy['commit']}` deployed {recent_deploy['deployed_ago']} intr
 2. **Clear Orphaned DB Connections**: Run in PostgreSQL:
    `SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE state = 'idle in transaction';`
 3. **Rollback Faulty Commit**: Trigger canary rollback of `{recent_deploy['service']}` to stable release `v2.13.8`.
-4. **Rescale HikariCP Capacity**: Increase maximum connection pool size from 50 to 200 with an aggressive 30s connection leak threshold.
-
----
-
-Similar Incident Ticket: #{top_match['id']} ({int(top_match['similarity_score'] * 100)}% Match) - {top_match['title']}."""
+4. **Rescale HikariCP Capacity**: Increase maximum connection pool size from 50 to 200 with an aggressive 30s connection leak threshold."""
 
     spoken_summary = (
         f"Investigation complete: The failure was caused by the Database layer, where PostgreSQL connection pool reached 98% saturation from unclosed transactions in commit {recent_deploy['commit']}. "
         f"This cascaded a 504 Gateway Timeout to the Backend and stalled the Frontend. "
-        f"To resolve: drain node-us-east-2, terminate idle database connections with pg_terminate_backend, and rollback to version v2.13.8. "
-        f"Similar Incident Ticket: #{top_match['id']} with {int(top_match['similarity_score'] * 100)}% similarity."
+        f"To resolve: drain node-us-east-2, terminate idle database connections with pg_terminate_backend, and rollback to version v2.13.8. Historical precedent analysis is ready in Hindsight."
     )
 
     final_reply_text = voice_reply_text if (voice_reply_text and "Root Cause" in voice_reply_text) else chatgpt_breakdown

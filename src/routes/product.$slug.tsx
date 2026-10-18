@@ -32,7 +32,7 @@ function ProductDetailPage() {
         p.id === Number(slug)
     ) || products.find((p) => p.name === "Nexa Watch S") || products[0];
 
-  return <NexaStore initialProduct={prod} />;
+  return <NexaStore initialProduct={prod ?? null} />;
 }
 
 export default ProductDetailPage;

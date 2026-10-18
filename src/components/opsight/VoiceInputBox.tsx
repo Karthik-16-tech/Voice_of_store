@@ -49,12 +49,18 @@ export function VoiceInputBox({
   const [isExpanded, setIsExpanded] = useState(true);
   const [activeSpeechSynth, setActiveSpeechSynth] = useState(false);
 
+  const getGreeting = () => {
+    const h = new Date().getHours();
+    if (h < 12) return "Good morning, Sir.";
+    if (h < 17) return "Good afternoon, Sir.";
+    return "Good evening, Sir.";
+  };
+
   const [messages, setMessages] = useState<MessageItem[]>([
     {
       id: "initial-1",
       role: "assistant",
-      content:
-        "Opsight Neural Voice Interface online. Connected to Gemini 2.5 Flash. Click the mic or speak anytime to query infrastructure telemetry.",
+      content: `${getGreeting()} Voice of Store AI online and standing by. High-impact telemetry across all 42 stores is synchronized. How may I direct our store operations today, Sir?`,
       timestamp: "Ready",
     },
   ]);
@@ -236,33 +242,52 @@ export function VoiceInputBox({
 
       // 2. Direct Gemini Fallback if backend was unreachable
       if (!reply) {
-        const geminiRes = await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              contents: [
-                {
-                  role: "user",
-                  parts: [
+        const greeting = getGreeting();
+        for (const model of ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-1.5-flash"]) {
+          try {
+            const geminiRes = await fetch(
+              `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_API_KEY}`,
+              {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  systemInstruction: {
+                    parts: [
+                      {
+                        text: `You are Voice of Store AI, the world's most elite executive store operations copilot.
+Protocol:
+1. Always address the user as "Sir" and greet with "${greeting}".
+2. Prioritize high-impact operational matters first (Store 042 bakery allergen quarantine, Store 018 freezer C4 stability, Store 027 checkout throughput).
+3. Speak like the premier AI assistant—articulate, sharp, polite, and natural. Never use robotic templates.`,
+                      },
+                    ],
+                  },
+                  contents: [
                     {
-                      text: `You are Opsight, an AI holographic operations engineer inspecting cloud clusters. Keep the response to 2 concise sentences suitable for spoken voice. Question: ${text}`,
+                      role: "user",
+                      parts: [
+                        {
+                          text,
+                        },
+                      ],
                     },
                   ],
-                },
-              ],
-            }),
-          }
-        );
+                }),
+              }
+            );
 
-        if (geminiRes.ok) {
-          const geminiData = await geminiRes.json();
-          reply =
-            geminiData.candidates?.[0]?.content?.parts?.[0]?.text?.trim() ||
-            "Diagnostics complete. Subsystem parameters remain within expected bounds.";
-        } else {
-          reply = `Telemetry link acknowledged '${text}'. Automated cluster diagnostics dispatched.`;
+            if (geminiRes.ok) {
+              const geminiData = await geminiRes.json();
+              reply = geminiData.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || "";
+              if (reply) break;
+            }
+          } catch (modelErr) {
+            console.warn(`Model ${model} fallback error:`, modelErr);
+          }
+        }
+
+        if (!reply) {
+          reply = `${greeting} Sir, live telemetry across our 42 store network is acknowledged. All high-impact operational sectors are under active monitoring and containment. At your command, Sir.`;
         }
       }
 

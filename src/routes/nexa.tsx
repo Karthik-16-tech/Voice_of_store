@@ -456,12 +456,13 @@ export function NexaStore({
         </div>
       )}
 
-      {/* Floating Opsight Agent Orb Widget */}
-      <div className="fixed right-3 sm:right-6 top-1/2 -translate-y-1/2 z-40">
+      {/* Floating Opsight Agent Orb Widget (Bottom Right) */}
+      <div className="fixed right-4 bottom-4 sm:right-6 sm:bottom-6 z-40">
         <AgentOrb
           size="sm"
+          status={isSystemDegraded ? "incident" : "healthy"}
           onClick={() => setIsOpsightSidebarOpen(true)}
-          className="hover:scale-110 transition-transform duration-300"
+          className="hover:scale-110 transition-transform duration-300 drop-shadow-[0_10px_25px_rgba(0,0,0,0.5)]"
         />
       </div>
 
@@ -516,38 +517,6 @@ export function NexaStore({
             <Search size={14} />
             <input placeholder="Search products..." className="nexa-page-search-input" />
           </label>
-
-          {/* Opsight Orb Navbar Button */}
-          <button
-            onClick={() => setIsOpsightSidebarOpen(true)}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-purple-950/70 hover:bg-purple-900/90 border border-purple-500/50 text-xs font-mono text-purple-200 transition-all cursor-pointer shadow-[0_0_15px_rgba(168,85,247,0.3)] hover:shadow-[0_0_25px_rgba(168,85,247,0.6)] group"
-            title="Open Opsight SRE Orb Sidebar"
-          >
-            <span className="relative flex h-3 w-3 items-center justify-center">
-              <span
-                className={`animate-ping absolute inline-flex h-full w-full rounded-full ${
-                  isSystemDegraded ? "bg-red-400 opacity-75" : "bg-purple-400 opacity-75"
-                }`}
-              />
-              <span
-                className={`relative inline-flex rounded-full h-2.5 w-2.5 ${
-                  isSystemDegraded ? "bg-red-500" : "bg-purple-400 shadow-[0_0_8px_#c084fc]"
-                }`}
-              />
-            </span>
-            <span className="font-bold text-white tracking-wider flex items-center gap-1.5">
-              <span>OPSIGHT ORB</span>
-              <span
-                className={`text-[10px] px-1.5 py-0.2 rounded font-bold ${
-                  isSystemDegraded
-                    ? "bg-red-950 text-red-300 border border-red-500/30"
-                    : "bg-purple-950 text-purple-300 border border-purple-500/30"
-                }`}
-              >
-                {isSystemDegraded ? "SEV-1" : "LIVE"}
-              </span>
-            </span>
-          </button>
 
           <User size={20} className="nexa-page-action-icon" />
 

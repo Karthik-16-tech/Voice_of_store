@@ -39,7 +39,10 @@ const Experience = () => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   return (
-    <section id="experience" className="py-28 lg:py-36 bg-black relative" ref={ref}>
+    <section id="experience" className="py-24 lg:py-32 bg-white relative border-t border-slate-100" ref={ref}>
+      {/* Background ambient glow */}
+      <div className="pointer-events-none absolute inset-x-0 top-1/2 -translate-y-1/2 h-80 bg-blue-50/50 blur-3xl -z-10" />
+
       <div className="container mx-auto px-6 lg:px-12 max-w-4xl">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -47,18 +50,18 @@ const Experience = () => {
           transition={{ duration: 0.8 }}
           className="text-center mb-14 sm:mb-16"
         >
-          <span className="text-[11px] uppercase tracking-[0.2em] text-neutral-400 mb-3 block font-medium">
+          <span className="text-[11px] uppercase tracking-[0.2em] text-blue-600 mb-2 block font-extrabold">
             The Experience
           </span>
-          <h2 className="text-2xl md:text-4xl font-light mb-3 text-white tracking-tight">
+          <h2 className="text-2xl md:text-4xl font-black mb-3 text-slate-900 tracking-tight">
             Autonomous Incident Intelligence
           </h2>
-          <p className="text-sm text-neutral-400 max-w-md mx-auto font-light">
+          <p className="text-sm text-slate-500 max-w-md mx-auto font-normal">
             Continuous detection, instant memory correlation, and automated root cause analysis.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 gap-5">
+        <div className="grid grid-cols-1 gap-4 sm:gap-5">
           {features.map((feature, index) => {
             const Icon = feature.icon;
             const isHovered = hoveredIndex === index;
@@ -67,11 +70,11 @@ const Experience = () => {
                 key={feature.title}
                 initial={{ opacity: 0, y: 0, scale: 1 }}
                 animate={isInView ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0 }}
-                whileHover={{ y: -4, scale: 1.01 }}
-                transition={{ duration: 0.3 }}
+                whileHover={{ y: -3, scale: 1.01 }}
+                transition={{ duration: 0.25 }}
                 onHoverStart={() => setHoveredIndex(index)}
                 onHoverEnd={() => setHoveredIndex(null)}
-                className="relative overflow-hidden bg-black/75 hover:bg-black/95 backdrop-blur-xl border border-white/10 hover:border-white/25 rounded-2xl p-6 group shadow-lg shadow-black/40 hover:shadow-2xl hover:shadow-black/80 cursor-pointer transition-all duration-500"
+                className="relative overflow-hidden bg-white/85 hover:bg-white backdrop-blur-xl border border-slate-200/80 hover:border-blue-300 rounded-2xl p-6 group shadow-sm hover:shadow-xl hover:shadow-blue-500/10 cursor-pointer transition-all duration-300"
               >
                 {/* Video Background on Hover */}
                 <video
@@ -80,19 +83,19 @@ const Experience = () => {
                   loop
                   muted
                   playsInline
-                  className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-35 transition-opacity duration-500 z-0 pointer-events-none"
+                  className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-15 transition-opacity duration-500 z-0 pointer-events-none"
                 />
 
                 {/* Content */}
                 <div className="relative z-10 flex items-center gap-5">
-                  <div className="flex-shrink-0 inline-flex items-center justify-center w-12 h-12 rounded-full bg-white/[0.07] border border-white/10 group-hover:bg-white/20 transition-colors duration-300">
-                    <Icon className="h-5 w-5 text-white transition-colors duration-300" strokeWidth={1.75} />
+                  <div className="flex-shrink-0 inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-blue-50 border border-blue-100 text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300 shadow-xs">
+                    <Icon className="h-5 w-5 transition-colors duration-300" strokeWidth={1.8} />
                   </div>
                   <div className="flex flex-col text-left">
-                    <h3 className="text-base font-normal mb-1 text-white tracking-tight transition-colors duration-300">
+                    <h3 className="text-base font-extrabold mb-1 text-slate-900 tracking-tight group-hover:text-blue-600 transition-colors duration-300">
                       {feature.title}
                     </h3>
-                    <p className="text-xs text-neutral-400 group-hover:text-white/90 leading-relaxed font-light transition-colors duration-300">
+                    <p className="text-xs text-slate-500 group-hover:text-slate-700 leading-relaxed font-medium transition-colors duration-300">
                       {feature.description}
                     </p>
                   </div>

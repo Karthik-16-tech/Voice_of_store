@@ -86,9 +86,21 @@
   --color-line-soft: var(--line-soft);
   --color-text-secondary: var(--text-secondary);
   --color-text-tertiary: var(--text-tertiary);
+  --color-sev-critical: var(--sev-critical);
+  --color-sev-high: var(--sev-high);
+  --color-sev-medium: var(--sev-medium);
+  --color-sev-low: var(--sev-low);
+  --color-live: var(--live);
 }
 
 :root {
+  --sev-critical: oklch(0.63 0.21 25);
+  --sev-high: oklch(0.77 0.16 70);
+  --sev-medium: oklch(0.6 0.19 258);
+  --sev-low: oklch(0.77 0.04 245);
+  --live: oklch(0.68 0.17 150);
+  --dot: oklch(0.82 0.004 260);
+  --font-display: "Geist", "Helvetica Neue", Arial, sans-serif;
   --radius: 0.5rem;
   --background: oklch(0.06 0.008 230);
   --foreground: oklch(0.96 0.006 230);
@@ -3315,3 +3327,70 @@
   .nexa-page-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
   .nexa-page-search-pill { display: none; }
 }
+
+/* Voice of Store 3D Retail Digital Twin Styles */
+@utility dot-grid {
+  background-color: var(--background, #faf9f6);
+  background-image: radial-gradient(var(--dot, #cfcbbe) 0.7px, transparent 0.8px);
+  background-size: 22px 22px;
+}
+
+@utility glass {
+  background: oklch(1 0 0 / 70%);
+  backdrop-filter: blur(18px) saturate(140%);
+  border: 1px solid oklch(0.9 0.004 260 / 80%);
+  box-shadow: 0 1px 0 oklch(1 0 0 / 80%) inset, 0 18px 40px -18px oklch(0.2 0.02 260 / 22%);
+}
+
+@utility headline {
+  font-family: var(--font-display, "Geist", sans-serif);
+  font-weight: 700;
+  letter-spacing: -0.055em;
+  line-height: 0.92;
+}
+
+.vos-tooltip {
+  white-space: nowrap;
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: oklch(0.16 0.005 260 / 88%);
+  color: #ffffff;
+}
+
+.vos-marker {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px 5px 5px;
+  border-radius: 12px;
+  white-space: nowrap;
+  cursor: pointer;
+  background: oklch(1 0 0 / 82%);
+  backdrop-filter: blur(12px);
+  border: 1px solid oklch(0.9 0.004 260);
+  box-shadow: 0 18px 40px -18px oklch(0.2 0.02 260 / 22%);
+  transition: opacity 0.3s, transform 0.3s;
+  font-family: var(--font-display, inherit);
+}
+.vos-marker:hover, .vos-marker[data-active="true"] { transform: scale(1.06); }
+.vos-marker[data-active="true"] { outline: 2px solid #1f2937; outline-offset: 2px; }
+.vos-marker[data-dim="true"] { opacity: 0.35; }
+.vos-marker-pin {
+  width: 28px; height: 28px; border-radius: 999px;
+  display: grid; place-items: center;
+  color: #ffffff; font-weight: 700; font-size: 13px;
+  box-shadow: 0 0 0 4px oklch(1 0 0 / 70%);
+  animation: vos-pulse 2.4s ease-in-out infinite;
+}
+.vos-marker[data-sev="low"] .vos-marker-pin, .vos-marker[data-sev="medium"] .vos-marker-pin { animation: none; }
+.vos-marker-text { display: flex; flex-direction: column; text-align: left; line-height: 1.2; }
+.vos-marker-title { font-size: 12px; font-weight: 600; color: #1f2937; }
+.vos-marker-sub { font-size: 11px; }
+@keyframes vos-pulse {
+  0%, 100% { box-shadow: 0 0 0 4px oklch(1 0 0 / 70%), 0 0 0 4px oklch(0.63 0.21 25 / 0); }
+  50% { box-shadow: 0 0 0 4px oklch(1 0 0 / 70%), 0 0 0 10px oklch(0.63 0.21 25 / 14%); }
+}
+@keyframes vos-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@utility animate-in-soft { animation: vos-in 0.35s ease-out both; }
+

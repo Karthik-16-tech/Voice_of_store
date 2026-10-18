@@ -10,8 +10,8 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AppDashboardRouteImport } from './routes/app-dashboard'
-import { Route as ConnectionRouteImport } from './routes/connection'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as EnvironmentRouteImport } from './routes/environment'
 import { Route as NexaRouteImport } from './routes/nexa'
@@ -22,14 +22,14 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AppDashboardRoute = AppDashboardRouteImport.update({
   id: '/app-dashboard',
   path: '/app-dashboard',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ConnectionRoute = ConnectionRouteImport.update({
-  id: '/connection',
-  path: '/connection',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardRoute = DashboardRouteImport.update({
@@ -55,8 +55,8 @@ const ProductSlugRoute = ProductSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/app-dashboard': typeof AppDashboardRoute
-  '/connection': typeof ConnectionRoute
   '/dashboard': typeof DashboardRoute
   '/environment': typeof EnvironmentRoute
   '/nexa': typeof NexaRoute
@@ -64,8 +64,8 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/app-dashboard': typeof AppDashboardRoute
-  '/connection': typeof ConnectionRoute
   '/dashboard': typeof DashboardRoute
   '/environment': typeof EnvironmentRoute
   '/nexa': typeof NexaRoute
@@ -74,8 +74,8 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/app-dashboard': typeof AppDashboardRoute
-  '/connection': typeof ConnectionRoute
   '/dashboard': typeof DashboardRoute
   '/environment': typeof EnvironmentRoute
   '/nexa': typeof NexaRoute
@@ -85,8 +85,8 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin'
     | '/app-dashboard'
-    | '/connection'
     | '/dashboard'
     | '/environment'
     | '/nexa'
@@ -94,8 +94,8 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/admin'
     | '/app-dashboard'
-    | '/connection'
     | '/dashboard'
     | '/environment'
     | '/nexa'
@@ -103,8 +103,8 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/admin'
     | '/app-dashboard'
-    | '/connection'
     | '/dashboard'
     | '/environment'
     | '/nexa'
@@ -113,8 +113,8 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRoute
   AppDashboardRoute: typeof AppDashboardRoute
-  ConnectionRoute: typeof ConnectionRoute
   DashboardRoute: typeof DashboardRoute
   EnvironmentRoute: typeof EnvironmentRoute
   NexaRoute: typeof NexaRoute
@@ -130,18 +130,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/app-dashboard': {
       id: '/app-dashboard'
       path: '/app-dashboard'
       fullPath: '/app-dashboard'
       preLoaderRoute: typeof AppDashboardRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/connection': {
-      id: '/connection'
-      path: '/connection'
-      fullPath: '/connection'
-      preLoaderRoute: typeof ConnectionRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard': {
@@ -177,8 +177,8 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRoute,
   AppDashboardRoute: AppDashboardRoute,
-  ConnectionRoute: ConnectionRoute,
   DashboardRoute: DashboardRoute,
   EnvironmentRoute: EnvironmentRoute,
   NexaRoute: NexaRoute,
